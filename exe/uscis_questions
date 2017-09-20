@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
 require "uscis_questions"
+
+UscisQuestions::CLI.start(ARGV)
