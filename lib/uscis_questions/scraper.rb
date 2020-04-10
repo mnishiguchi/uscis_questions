@@ -15,7 +15,7 @@ module UscisQuestions
     end
 
     def questions
-      @questions ||= question_paragraphs.map { |p| p.text.split("Question").first }
+      @questions ||= question_paragraphs.map { |p| p.text.split("Question").first.strip }
     end
 
     def audio_links
@@ -23,9 +23,9 @@ module UscisQuestions
     end
 
     def answers
-      @answers ||= page.css(".field-item.even ul").map { |p|
-        p.css("li div").map {|div| div.text }
-      }.select { |list| list.size > 0 }
+      @answers ||= page.css(".field-item.even ul").map do |p|
+        p.css("li div").map { |div| div.text&.strip }
+      end.reject(&:empty?)
     end
 
     def hash
