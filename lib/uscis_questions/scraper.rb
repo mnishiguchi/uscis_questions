@@ -6,10 +6,11 @@ require 'json'
 
 module UscisQuestions
   class Scraper
-    SITE_URL = 'https://www.uscis.gov/citizenship/teachers/educational-products/100-civics-questions-and-answers-mp3-audio-english-version'
+    BASE_URL = 'https://www.uscis.gov'
+    QUESTIONS_PATH = '/citizenship/teachers/educational-products/100-civics-questions-and-answers-mp3-audio-english-version'
 
     def page
-      @page ||= Nokogiri::HTML(open(SITE_URL))
+      @page ||= Nokogiri::HTML(open(File.join(BASE_URL, QUESTIONS_PATH)))
     end
 
     def question_paragraphs
@@ -21,7 +22,7 @@ module UscisQuestions
     end
 
     def audio_links
-      @audio_links ||= question_paragraphs.map { |p| p.css('a').first[:href] }
+      @audio_links ||= question_paragraphs.map { |p| File.join(BASE_URL, p.css('a').first[:href]) }
     end
 
     def answers
