@@ -24,7 +24,10 @@ module UscisQuestions
     end
 
     def questions
-      @questions ||= question_paragraphs.map { |p| p.text.split('Question').first.strip }
+      @questions ||= question_paragraphs.map do |p|
+        # Strip whitespaces and question id prefix like "33. "
+        p.text.split('Question').first.sub(/\A\d*\./, '').strip
+      end
     end
 
     def audio_links
