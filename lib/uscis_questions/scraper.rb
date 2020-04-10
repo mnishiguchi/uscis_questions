@@ -1,30 +1,32 @@
-require "nokogiri"
-require "open-uri"
-require "json"
+# frozen_string_literal: true
+
+require 'nokogiri'
+require 'open-uri'
+require 'json'
 
 module UscisQuestions
   class Scraper
-    SITE_URL = "https://www.uscis.gov/citizenship/teachers/educational-products/100-civics-questions-and-answers-mp3-audio-english-version"
+    SITE_URL = 'https://www.uscis.gov/citizenship/teachers/educational-products/100-civics-questions-and-answers-mp3-audio-english-version'
 
     def page
       @page ||= Nokogiri::HTML(open(SITE_URL))
     end
 
     def question_paragraphs
-      @question_paragraphs ||= page.css(".field-item.even p>strong").select { |p| p.text[0] =~ /\A\d+/ }
+      @question_paragraphs ||= page.css('.field-item.even p>strong').select { |p| p.text[0] =~ /\A\d+/ }
     end
 
     def questions
-      @questions ||= question_paragraphs.map { |p| p.text.split("Question").first.strip }
+      @questions ||= question_paragraphs.map { |p| p.text.split('Question').first.strip }
     end
 
     def audio_links
-      @audio_links ||= question_paragraphs.map { |p| p.css("a").first[:href] }
+      @audio_links ||= question_paragraphs.map { |p| p.css('a').first[:href] }
     end
 
     def answers
-      @answers ||= page.css(".field-item.even ul").map do |p|
-        p.css("li div").map { |div| div.text&.strip }
+      @answers ||= page.css('.field-item.even ul').map do |p|
+        p.css('li div').map { |div| div.text&.strip }
       end.reject(&:empty?)
     end
 
