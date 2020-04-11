@@ -2,9 +2,9 @@
 
 require 'awesome_print'
 require 'thor'
-require 'uscis_questions/scraper'
+require 'uscis_quiz_scraper/scraper'
 
-module UscisQuestions
+module UscisQuizScraper
   class Cli < Thor
     desc 'questions', 'Fetch 100 questions from the uscis website'
     def questions
@@ -55,7 +55,7 @@ module UscisQuestions
     private
 
     def scraper
-      UscisQuestions::Scraper.new
+      UscisQuizScraper::Scraper.new
     end
   end
 end

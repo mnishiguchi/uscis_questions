@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'uscis_questions/cli'
+require 'uscis_quiz_scraper/cli'
 
-describe UscisQuestions::Cli do
+describe UscisQuizScraper::Cli do
   let(:cli) { described_class.new }
 
   it 'is valid' do

@@ -11,8 +11,8 @@ Style/Documentation:
   Exclude:
     - 'spec/**/*'
     - 'test/**/*'
-    - 'lib/uscis_questions/cli.rb'
-    - 'lib/uscis_questions/scraper.rb'
+    - 'lib/uscis_quiz_scraper/cli.rb'
+    - 'lib/uscis_quiz_scraper/scraper.rb'
 
 # Offense count: 10
 # Cop supports --auto-correct.

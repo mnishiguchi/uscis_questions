@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'uscis_questions/scraper'
+require 'uscis_quiz_scraper/scraper'
 
-describe UscisQuestions::Scraper do
+describe UscisQuizScraper::Scraper do
   let(:scraper) { described_class.new }
 
   describe '#page' do

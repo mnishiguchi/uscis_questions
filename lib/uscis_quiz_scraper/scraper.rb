@@ -4,7 +4,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'json'
 
-module UscisQuestions
+module UscisQuizScraper
   class Scraper
     BASE_URL = 'https://www.uscis.gov'
     QUESTIONS_URL = File.join(
