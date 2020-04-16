@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'uscis_quiz_scraper/scraper'
 
-describe UscisQuizScraper::Scraper do
+describe UscisQuizScraper::QuestionsScraper do
   let(:scraper) { described_class.new }
 
   describe '#page' do

@@ -39,23 +39,13 @@ module UscisQuizScraper
 
     desc 'json', 'Fetch json of 100 questions and answers from the uscis website'
     def json
-      puts scraper.json
-    end
-
-    desc 'hash', 'Fetch ruby hash of 100 questions and answers from the uscis website'
-    def hash
-      puts scraper.hash
-    end
-
-    desc 'pretty_hash', 'Fetch ruby hash of 100 questions and answers from the uscis website'
-    def pretty_hash
-      ap scraper.hash
+      puts JSON.pretty_generate(scraper.result)
     end
 
     private
 
     def scraper
-      UscisQuizScraper::Scraper.new
+      UscisQuizScraper::QuestionsScraper.new
     end
   end
 end
