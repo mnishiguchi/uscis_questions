@@ -12,10 +12,8 @@ module UscisQuizScraper
       raise NotImplementedError
     end
   end
-
-  # https://www.uscis.gov/citizenship/testupdates
   class QuestionsScraper < BaseScraper
-    QUESTIONS_URL = File.join(
+    PAGE_URL = File.join(
       BASE_URL,
       'citizenship',
       'teachers',
@@ -35,7 +33,7 @@ module UscisQuizScraper
     end
 
     def page
-      @page ||= Nokogiri::HTML(URI.open(QUESTIONS_URL))
+      @page ||= Nokogiri::HTML(URI.open(PAGE_URL))
     end
 
     def question_paragraphs
@@ -57,6 +55,58 @@ module UscisQuizScraper
       @answers ||= page.css('.field-item.even ul').map do |p|
         p.css('li div').map { |div| div.text&.strip }
       end.reject(&:empty?)
+    end
+  end
+
+  class UpdatesScraper < BaseScraper
+    PAGE_URL = File.join(
+      BASE_URL,
+      'citizenship',
+      'testupdates'
+    )
+
+    def result
+      (0...ids.size).map do |i|
+        {
+          id: ids[i],
+          question: questions[i],
+          answer: answers[i]
+        }
+      end
+    end
+
+    def page
+      @page ||= Nokogiri::HTML(URI.open(PAGE_URL))
+    end
+
+    def question_paragraphs
+      @question_paragraphs ||= page.css('.field-item.even p>strong').select { |p| p.text[0] =~ /\A\d+/ }
+    end
+
+    def questions
+      @questions ||= question_paragraphs.map do |p|
+        # Strip whitespaces and question id prefix like "33. "
+        p.text.split('Question').first.sub(/\A\d*\./, '').strip
+      end
+    end
+
+    def audio_links
+      # There is no audio link for test updates as of April 16, 2020.
+    end
+
+    def answers
+      @answers ||= page.css('.field-item.even ul').map do |p|
+        p.css('li').map { |div| div.text&.strip }
+      end.reject(&:empty?)
+    end
+
+    def ids
+      @ids ||= question_paragraphs.map do |p|
+        # There is a question id prefix like "33. ".
+        Integer(
+          p.text.split('Question').first.partition('. ').first
+        )
+      end
     end
   end
 end
